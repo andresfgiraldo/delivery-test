@@ -1,0 +1,27 @@
+version: '3.6'
+services:
+  app:
+    build: .
+    image: shippify/delivery/app:latest
+    container_name: shippify-delivery-app
+    volumes:
+      - ./.env:/usr/src/app/.env
+    ports:
+      - "${APP_PORT}:3000"
+    depends_on:
+      - redis
+    networks:
+      - shippify_delivery_net
+  
+  redis:
+    image: "redis:alpine"
+    container_name: shippify-delivery-redis
+    hostname: shippify-redis-host
+    ports:
+      - "${REDIS_PORT}:6379"
+    networks:
+      - shippify_delivery_net
+
+networks:
+  shippify_delivery_net:
+    driver: bridge

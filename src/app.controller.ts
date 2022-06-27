@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { RequestRoute } from './interfaces/request';
+import { ResponseRoute } from './interfaces/response';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post("/route")
+  async getRoute(@Body() req: RequestRoute): Promise<ResponseRoute> {
+    return await this.appService.scanRoute(req);
   }
 }
